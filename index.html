@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Penilaian Lomba Penataan Kelas - SDN 190 Cisaranten Kidul</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f766e 50%, #0369a1 100%);
+      min-height: 100vh;
+    }
+    .surface-card {
+      background: rgba(255, 255, 255, 0.98);
+    }
+    .top-bar {
+      background: rgba(15, 23, 42, 0.92);
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .surface-card {
+        border: 1px solid #cbd5e1 !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+  <!-- ==================== HALAMAN LOGIN ==================== -->
+  <div id="view-login" class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md surface-card rounded-3xl shadow-2xl border border-white/40 p-7 sm:p-9">
+      <div class="flex flex-col items-center text-center mb-6">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 via-emerald-500 to-indigo-600 text-white flex items-center justify-center shadow-lg mb-4 text-2xl font-extrabold">
+          190
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-teal-100 text-teal-800 mb-2">
+          SDN 190 Cisaranten Kidul
+        </span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          Lomba Penataan Kelas
+        </h1>
+        <p class="text-sm text-slate-500 mt-1.5">
+          Masukkan token akses Panitia atau Juri untuk masuk ke aplikasi.
+        </p>
+      </div>
+
+      <form id="form-login" class="space-y-4">
+        <div>
+          <label for="input-token" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+            Token Akses
+          </label>
+          <div class="relative">
+            <input
+              id="input-token"
+              type="password"
+              autocomplete="off"
+              placeholder="Contoh: PANITIA-190"
+              class="w-full pl-4 pr-24 py-3.5 rounded-xl border-2 border-slate-200 focus:border-teal-500 outline-none text-slate-900 font-semibold"
+            />
+            <button
+              type="button"
+              id="btn-toggle-token"
+              class="absolute right-2.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-teal-100 hover:text-teal-800 cursor-pointer"
+            >
+              Lihat
+            </button>
+          </div>
+          <p id="login-alert" class="hidden text-xs font-semibold text-rose-600 mt-2"></p>
+        </div>
+
+        <button
+          type="submit"
+          id="btn-login-submit"
+          class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-teal-600 via-emerald-600 to-indigo-600 hover:from-teal-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg cursor-pointer"
+        >
+          Masuk ke Aplikasi
+        </button>
+
+        <div class="pt-3 border-t border-slate-100 space-y-2">
+          <p class="text-[11px] text-slate-400 text-center font-medium">
+            Token: <span class="font-mono font-bold text-slate-600">PANITIA-190</span> •
+            <span class="font-mono font-bold text-slate-600">DJAELANI-190</span> •
+            <span class="font-mono font-bold text-slate-600">RIKAA-190</span> •
+            <span class="font-mono font-bold text-slate-600">AGUSSAE-190</span>
+          </p>
+          <button
+            type="button"
+            id="btn-copy-login-link"
+            class="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:border-teal-300 hover:bg-teal-50 text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>🔗</span>
+            <span>Salin Link Aplikasi</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== HALAMAN UTAMA APLIKASI ==================== -->
+  <div id="view-main" style="display: none;" class="min-h-screen pb-14">
+    <header class="sticky top-0 z-30 top-bar text-white border-b border-white/10 shadow-lg no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-indigo-500 text-slate-950 font-extrabold flex items-center justify-center shadow">
+            190
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h1 class="font-extrabold text-base sm:text-lg leading-tight">Lomba Penataan Kelas</h1>
+              <span id="badge-role" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-500/20 text-teal-300 border border-teal-400/30">
+                Peran
+              </span>
+            </div>
+            <p class="text-xs text-slate-300">SDN 190 Cisaranten Kidul • Sinkronisasi Otomatis Google Apps Script</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-teal-300 flex items-center gap-1.5 border border-white/10">
+            <span id="sync-indicator" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span id="sync-label">Siap</span>
+          </div>
+
+          <button
+            type="button"
+            id="btn-sync-now"
+            class="px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
+          >
+            <span>🔄</span> <span>Sinkronkan Sekarang</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-copy-main-link"
+            class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>🔗</span> <span>Salin Link</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-logout"
+            class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition shadow cursor-pointer"
+          >
+            Keluar
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+      <div id="banner-locked" class="hidden rounded-2xl bg-amber-50 border-2 border-amber-300 p-4 flex items-center gap-3 shadow-sm">
+        <span class="text-2xl">🔒</span>
+        <div>
+          <h3 class="font-bold text-amber-900 text-sm">Penilaian Sedang Dikunci Panitia</h3>
+          <p class="text-xs text-amber-700">Input nilai sementara dikunci oleh Panitia. Hubungi Panitia jika perlu melakukan perubahan.</p>
+        </div>
+      </div>
+
+      <div id="banner-no-gas" class="hidden rounded-2xl bg-sky-50 border-2 border-sky-300 p-4 flex items-center gap-3 shadow-sm no-print">
+        <span class="text-2xl">☁️</span>
+        <div>
+          <h3 class="font-bold text-sky-950 text-sm">Menunggu URL Web App Google Apps Script</h3>
+          <p class="text-xs text-sky-800">
+            Agar nilai dari Juri langsung terkirim otomatis ke Admin di Google Sheets tanpa salin-tempel kode, Panitia cukup memasang Web App URL (<code class="bg-white px-1 rounded">/exec</code>) lalu membagikan link berparameter <code class="bg-white px-1 rounded">#gas=...</code> ke perangkat Juri.
+          </p>
+        </div>
+      </div>
+
+      <!-- PODIUM & STATISTIK -->
+      <section id="section-summary-admin" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-8 surface-card rounded-3xl p-5 sm:p-6 shadow-xl border border-white/60">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 uppercase tracking-wider">
+                Peringkat Terbaik Otomatis
+              </span>
+              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">
+                🏆 Podium Juara 1, 2, 3 Lomba Penataan Kelas
+              </h2>
+            </div>
+            <span class="text-xs font-semibold text-slate-500">Berdasarkan Nilai Akhir (Skala 100)</span>
+          </div>
+          <div id="box-podium" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5"></div>
+        </div>
+
+        <div class="lg:col-span-4 grid grid-cols-2 gap-3.5">
+          <div class="surface-card rounded-2xl p-4 shadow-lg border border-white/50 flex flex-col justify-between">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Jumlah Kelas</p>
+            <p class="text-2xl font-extrabold text-slate-900 mt-1">16 Kelas</p>
+            <p class="text-xs text-teal-600 font-semibold mt-1">1A&amp;24 – 5E&amp;6E (Dapat Diedit)</p>
+          </div>
+
+          <div class="surface-card rounded-2xl p-4 shadow-lg border border-white/50 flex flex-col justify-between">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Progres J1 / J2 / J3</p>
+            <p id="metric-progress" class="text-xl font-extrabold text-indigo-700 mt-1">0 / 0 / 0</p>
+            <p class="text-xs text-slate-500 font-medium mt-1">Kelas sudah dinilai</p>
+          </div>
+
+          <div class="surface-card rounded-2xl p-4 shadow-lg border border-white/50 flex flex-col justify-between">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Rata-rata Nilai</p>
+            <p id="metric-avg" class="text-2xl font-extrabold text-emerald-700 mt-1">0.00</p>
+            <p class="text-xs text-slate-500 font-medium mt-1">Nilai Akhir 16 kelas</p>
+          </div>
+
+          <div class="surface-card rounded-2xl p-4 shadow-lg border border-white/50 flex flex-col justify-between">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Jalur Kirim Nilai</p>
+            <p id="metric-gas" class="text-base font-extrabold text-teal-700 mt-1">Apps Script</p>
+            <p id="metric-lock" class="text-xs font-semibold text-emerald-600 mt-1">Penilaian Terbuka</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL KONTROL PANITIA / ADMIN -->
+      <section id="section-admin-panel" class="hidden surface-card rounded-3xl p-5 sm:p-6 shadow-xl border border-white/60 no-print space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-900">⚙️ Panel Kontrol Panitia / Admin</h2>
+            <p class="text-xs text-slate-500">Hubungkan Google Apps Script, kelola nama 16 kelas, kunci penilaian, cetak laporan, CSV, dan JSON.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" id="btn-edit-classes" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition cursor-pointer">
+              ✏️ Edit Nama 16 Kelas
+            </button>
+            <button type="button" id="btn-toggle-lock" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition cursor-pointer">
+              🔒 Kunci Penilaian
+            </button>
+            <button type="button" id="btn-print" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition cursor-pointer">
+              🖨️ Cetak Laporan
+            </button>
+            <button type="button" id="btn-csv" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition cursor-pointer">
+              📊 Unduh CSV
+            </button>
+            <button type="button" id="btn-json" class="px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition cursor-pointer">
+              💾 Ekspor JSON
+            </button>
+            <label class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition cursor-pointer">
+              📂 Impor JSON
+              <input type="file" id="input-import-json" accept=".json" class="hidden" />
+            </label>
+            <button type="button" id="btn-reset" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition cursor-pointer">
+              🗑️ Reset Nilai
+            </button>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-teal-50/80 border border-teal-200 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-extrabold text-teal-950">🌐 Koneksi Google Apps Script &amp; Google Spreadsheet (Kirim Otomatis ke Admin)</h3>
+              <p class="text-xs text-teal-800">
+                Tempel Web App URL (<code class="bg-white/80 px-1.5 py-0.5 rounded">/exec</code>) lalu klik <strong>Simpan &amp; Salin Link Juri</strong>. Link akan memuat <code class="bg-white/80 px-1.5 py-0.5 rounded">#gas=...</code> sehingga setiap input Juri otomatis terkirim langsung ke Admin &amp; Google Spreadsheet.
+              </p>
+            </div>
+            <button type="button" id="btn-toggle-script" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer">
+              📄 Lihat / Salin Kode Apps Script
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+            <div class="lg:col-span-2">
+              <input
+                type="url"
+                id="input-gas-url"
+                placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-teal-300 text-xs font-mono text-slate-800 focus:border-teal-600 outline-none"
+              />
+            </div>
+            <div class="flex gap-2">
+              <button type="button" id="btn-save-gas" class="flex-1 py-2.5 px-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold cursor-pointer">
+                Simpan URL
+              </button>
+              <button type="button" id="btn-save-copy-gas" class="flex-1 py-2.5 px-3 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold cursor-pointer">
+                Simpan &amp; Salin Link Juri
+              </button>
+            </div>
+          </div>
+
+          <div id="panel-gas-script" class="hidden pt-2">
+            <div class="p-3.5 rounded-xl bg-slate-900 text-slate-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-teal-400">Kode Google Apps Script (Code.gs) — Lomba Penataan Kelas</span>
+                <button type="button" id="btn-copy-gas-code" class="px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold cursor-pointer">
+                  📋 Salin Code.gs
+                </button>
+              </div>
+              <pre id="pre-gas-script" class="text-[11px] font-mono overflow-x-auto p-3 rounded-lg bg-slate-950 text-emerald-300 leading-relaxed max-h-64">function doGet(e) {
+  return handleRequest_(e, "GET");
+}
+
+function doPost(e) {
+  return handleRequest_(e, "POST");
+}
+
+function handleRequest_(e, method) {
+  var lock = LockService.getScriptLock();
+  var gotLock = lock.tryLock(15000);
+  try {
+    var ss = getTargetSpreadsheet_();
+    var dbSheet = ss.getSheetByName("DB_PENATAAN") || ss.insertSheet("DB_PENATAAN");
+    var rekapSheet = ss.getSheetByName("REKAP_PENATAAN") || ss.insertSheet("REKAP_PENATAAN");
+
+    var raw = String(dbSheet.getRange("A1").getValue() || "").trim();
+    var state = getInitialState_();
+    if (raw) {
+      try {
+        state = sanitizeState_(JSON.parse(raw));
+      } catch (parseErr) {
+        state = getInitialState_();
+      }
+    }
+
+    var params = (e &amp;&amp; e.parameter) ? e.parameter : {};
+    var action = params.action ? String(params.action) : "get";
+    var payload = {};
+
+    if (e &amp;&amp; e.postData &amp;&amp; e.postData.contents) {
+      var contents = String(e.postData.contents).trim();
+      if (contents) {
+        try {
+          payload = JSON.parse(contents);
+          if (payload &amp;&amp; payload.action) {
+            action = String(payload.action);
+          }
+        } catch (jsonErr) {
+          if (params.payload) {
+            try {
+              payload = JSON.parse(String(params.payload));
+            } catch (e2) {}
+          }
+        }
+      }
+    }
+
+    if (!payload || typeof payload !== "object") {
+      payload = {};
+    }
+
+    if (action === "save_judge" &amp;&amp; payload.judge &amp;&amp; state[payload.judge]) {
+      var jKey = String(payload.judge);
+      var rows = (payload.rows &amp;&amp; typeof payload.rows === "object") ? payload.rows : {};
+      Object.keys(rows).forEach(function(k) {
+        var idx = parseInt(k, 10);
+        if (!isNaN(idx) &amp;&amp; idx &gt;= 0 &amp;&amp; idx &lt; 16 &amp;&amp; rows[k] &amp;&amp; typeof rows[k] === "object") {
+          var incomingTs = Number(rows[k].ts || 0);
+          var currentTs = Number((state[jKey][idx] &amp;&amp; state[jKey][idx].ts) || 0);
+          if (incomingTs &gt;= currentTs || incomingTs === 0) {
+            state[jKey][idx] = {
+              a1: rows[k].a1 !== undefined ? rows[k].a1 : "",
+              a2: rows[k].a2 !== undefined ? rows[k].a2 : "",
+              a3: rows[k].a3 !== undefined ? rows[k].a3 : "",
+              a4: rows[k].a4 !== undefined ? rows[k].a4 : "",
+              note: rows[k].note !== undefined ? rows[k].note : "",
+              ts: incomingTs || new Date().getTime()
+            };
+          }
+        }
+      });
+      state.updatedAt = new Date().getTime();
+      saveStateToSheets_(dbSheet, rekapSheet, state);
+    } else if (action === "merge_state" &amp;&amp; payload.state) {
+      state = mergeStates_(state, sanitizeState_(payload.state));
+      state.updatedAt = new Date().getTime();
+      saveStateToSheets_(dbSheet, rekapSheet, state);
+    } else if (action === "update_settings") {
+      if (Array.isArray(payload.classes) &amp;&amp; payload.classes.length === 16) {
+        state.classes = payload.classes.map(function(c, idx) {
+          var s = String(c || "").trim();
+          return s || getInitialState_().classes[idx];
+        });
+      }
+      if (typeof payload.locked === "boolean") {
+        state.locked = payload.locked;
+      }
+      state.updatedAt = new Date().getTime();
+      saveStateToSheets_(dbSheet, rekapSheet, state);
+    } else if (action === "import_state" &amp;&amp; payload.state) {
+      state = sanitizeState_(payload.state);
+      state.updatedAt = new Date().getTime();
+      saveStateToSheets_(dbSheet, rekapSheet, state);
+    } else if (action === "reset_all") {
+      ["j1", "j2", "j3"].forEach(function(jk) {
+        for (var i = 0; i &lt; 16; i++) {
+          state[jk][i] = { a1: "", a2: "", a3: "", a4: "", note: "", ts: new Date().getTime() };
+        }
+      });
+      state.updatedAt = new Date().getTime();
+      saveStateToSheets_(dbSheet, rekapSheet, state);
+    } else if (!raw) {
+      saveStateToSheets_(dbSheet, rekapSheet, state);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true, method: method, state: state }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: err &amp;&amp; err.message ? err.message : String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    if (gotLock) {
+      try { lock.releaseLock(); } catch (lockErr) {}
+    }
+  }
+}
+
+function getTargetSpreadsheet_() {
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  var props = PropertiesService.getScriptProperties();
+  var savedId = props.getProperty("SPREADSHEET_ID");
+  if (savedId) {
+    return SpreadsheetApp.openById(savedId);
+  }
+  throw new Error("Buka Apps Script langsung dari menu Extensions &gt; Apps Script di file Google Sheet Anda.");
+}
+
+function saveStateToSheets_(dbSheet, rekapSheet, state) {
+  dbSheet.getRange("A1").setValue(JSON.stringify(state));
+  syncRekapSheet_(rekapSheet, state);
+}
+
+function getInitialState_() {
+  var def = {
+    classes: ["1A&amp;24", "1B&amp;2B", "1C&amp;2C", "1D&amp;2F", "1E&amp;2E", "2D", "3A&amp;4A", "3B&amp;4B", "3C&amp;4C", "3D&amp;4D", "3E&amp;4E", "5A&amp;6A", "5B&amp;6B", "5C&amp;6C", "5D&amp;6D", "5E&amp;6E"],
+    locked: false,
+    j1: {},
+    j2: {},
+    j3: {},
+    updatedAt: new Date().getTime()
+  };
+  ["j1", "j2", "j3"].forEach(function(jk) {
+    for (var i = 0; i &lt; 16; i++) {
+      def[jk][i] = { a1: "", a2: "", a3: "", a4: "", note: "", ts: 0 };
+    }
+  });
+  return def;
+}
+
+function sanitizeState_(obj) {
+  var def = getInitialState_();
+  if (!obj || typeof obj !== "object") return def;
+  if (!Array.isArray(obj.classes) || obj.classes.length !== 16) {
+    obj.classes = def.classes.slice();
+  }
+  if (typeof obj.locked !== "boolean") {
+    obj.locked = false;
+  }
+  ["j1", "j2", "j3"].forEach(function(jk) {
+    if (!obj[jk] || typeof obj[jk] !== "object") obj[jk] = {};
+    for (var i = 0; i &lt; 16; i++) {
+      var r = obj[jk][i];
+      if (!r || typeof r !== "object") {
+        obj[jk][i] = { a1: "", a2: "", a3: "", a4: "", note: "", ts: 0 };
+      } else {
+        obj[jk][i] = {
+          a1: r.a1 !== undefined ? r.a1 : "",
+          a2: r.a2 !== undefined ? r.a2 : "",
+          a3: r.a3 !== undefined ? r.a3 : "",
+          a4: r.a4 !== undefined ? r.a4 : "",
+          note: r.note !== undefined ? r.note : "",
+          ts: Number(r.ts || 0)
+        };
+      }
+    }
+  });
+  return obj;
+}
+
+function mergeStates_(baseObj, incObj) {
+  var out = sanitizeState_(baseObj);
+  var inc = sanitizeState_(incObj);
+  if (inc.classes &amp;&amp; inc.classes.length === 16) out.classes = inc.classes.slice();
+  if (typeof inc.locked === "boolean") out.locked = inc.locked;
+  ["j1", "j2", "j3"].forEach(function(jk) {
+    for (var i = 0; i &lt; 16; i++) {
+      var bRow = out[jk][i];
+      var iRow = inc[jk][i];
+      var hasIncVal = (
+        String(iRow.a1) !== "" ||
+        String(iRow.a2) !== "" ||
+        String(iRow.a3) !== "" ||
+        String(iRow.a4) !== "" ||
+        String(iRow.note) !== ""
+      );
+      if (hasIncVal &amp;&amp; Number(iRow.ts || 0) &gt;= Number(bRow.ts || 0)) {
+        out[jk][i] = iRow;
+      }
+    }
+  });
+  return out;
+}
+
+function computeJudgeScore_(r) {
+  if (!r) return 0;
+  var n1 = parseFloat(r.a1), n2 = parseFloat(r.a2), n3 = parseFloat(r.a3), n4 = parseFloat(r.a4);
+  if (isNaN(n1) &amp;&amp; isNaN(n2) &amp;&amp; isNaN(n3) &amp;&amp; isNaN(n4)) return 0;
+  var a1 = isNaN(n1) ? 0 : n1;
+  var a2 = isNaN(n2) ? 0 : n2;
+  var a3 = isNaN(n3) ? 0 : n3;
+  var a4 = isNaN(n4) ? 0 : n4;
+  return ((((a1 * 0.30) + (a2 * 0.30) + (a3 * 0.20) + (a4 * 0.20)) / 4) * 100);
+}
+
+function syncRekapSheet_(sheet, state) {
+  var rows = [[
+    "No", "Kelas",
+    "J1_TataLetak", "J1_Administrasi", "J1_CahayaUdara", "J1_Estetika", "J1_Total",
+    "J2_TataLetak", "J2_Administrasi", "J2_CahayaUdara", "J2_Estetika", "J2_Total",
+    "J3_TataLetak", "J3_Administrasi", "J3_CahayaUdara", "J3_Estetika", "J3_Total",
+    "Nilai_Akhir", "Catatan_Juri"
+  ]];
+  for (var i = 0; i &lt; 16; i++) {
+    var j1 = state.j1[i] || {};
+    var j2 = state.j2[i] || {};
+    var j3 = state.j3[i] || {};
+    var t1 = Number(computeJudgeScore_(j1).toFixed(2));
+    var t2 = Number(computeJudgeScore_(j2).toFixed(2));
+    var t3 = Number(computeJudgeScore_(j3).toFixed(2));
+    var akhir = Number(((t1 + t2 + t3) / 3).toFixed(2));
+    var catatan = [
+      j1.note ? "J1: " + j1.note : "",
+      j2.note ? "J2: " + j2.note : "",
+      j3.note ? "J3: " + j3.note : ""
+    ].filter(Boolean).join(" | ");
+    rows.push([
+      i + 1,
+      state.classes[i],
+      j1.a1 || "", j1.a2 || "", j1.a3 || "", j1.a4 || "", t1,
+      j2.a1 || "", j2.a2 || "", j2.a3 || "", j2.a4 || "", t2,
+      j3.a1 || "", j3.a2 || "", j3.a3 || "", j3.a4 || "", t3,
+      akhir,
+      catatan
+    ]);
+  }
+  sheet.clearContents();
+  sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows);
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-class-editor" class="hidden pt-4 border-t border-slate-200">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-slate-800">Ubah Nama 16 Kelas</h3>
+            <button type="button" id="btn-save-classes" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
+              Simpan Nama Kelas
+            </button>
+          </div>
+          <div id="grid-class-editor" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5"></div>
+        </div>
+      </section>
+
+      <!-- TABEL PENILAIAN 16 KELAS -->
+      <section class="surface-card rounded-3xl shadow-2xl border border-white/60 overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-slate-50 via-teal-50/40 to-indigo-50/40">
+          <div>
+            <h2 id="heading-table" class="text-lg sm:text-xl font-extrabold text-slate-900">
+              Lembar Penilaian Penataan Kelas
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
+              Skala <strong>1 – 4</strong> tiap aspek • Bobot: Tata Letak Perabotan (30%), Kelengkapan Administrasi (30%), Pencahayaan &amp; Sirkulasi Udara (20%), Estetika &amp; Kreativitas (20%). Nilai langsung terkirim otomatis via Google Apps Script.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5 text-xs bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-sm">
+            <span class="font-bold text-slate-700">Skala:</span>
+            <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-700 font-semibold">1 Kurang</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-700 font-semibold">2 Cukup</span>
+            <span class="px-2 py-0.5 rounded bg-sky-100 text-sky-700 font-semibold">3 Baik</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 font-semibold">4 Sangat Baik</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead id="tbl-head" class="bg-slate-900 text-white text-xs uppercase tracking-wider"></thead>
+            <tbody id="tbl-body" class="divide-y divide-slate-200 text-sm"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- KLASEMEN 16 KELAS -->
+      <section id="section-ranking-admin" class="surface-card rounded-3xl shadow-xl border border-white/60 overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-slate-200 bg-gradient-to-r from-teal-50/60 to-indigo-50/60">
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">📊 Klasemen &amp; Rekapitulasi 16 Kelas</h2>
+          <p class="text-xs text-slate-600 mt-0.5">Diurutkan otomatis berdasarkan Nilai Akhir rata-rata dari Juri 1, Juri 2, dan Juri 3.</p>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-800 text-white text-xs uppercase tracking-wider">
+              <tr>
+                <th class="py-3.5 px-4 text-center w-20">Rank</th>
+                <th class="py-3.5 px-4">Kelas</th>
+                <th class="py-3.5 px-4 text-center">Juri 1</th>
+                <th class="py-3.5 px-4 text-center">Juri 2</th>
+                <th class="py-3.5 px-4 text-center">Juri 3</th>
+                <th class="py-3.5 px-4 text-center bg-indigo-900">Nilai Akhir</th>
+                <th class="py-3.5 px-4">Predikat</th>
+              </tr>
+            </thead>
+            <tbody id="ranking-body" class="divide-y divide-slate-200 text-sm"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-box" class="fixed bottom-5 right-5 z-50 hidden">
+    <div class="px-4 py-3 rounded-2xl bg-slate-900 text-white text-xs font-bold shadow-2xl border border-white/15">
+      <span id="toast-text">Info</span>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var PRESET_GAS_URL = "";
+
+      var ACCESS_TOKENS = {
+        "PANITIA-190": { role: "admin", title: "Panitia / Admin" },
+        "DJAELANI-190": { role: "j1", title: "Juri 1" },
+        "RIKAA-190": { role: "j2", title: "Juri 2" },
+        "AGUSSAE-190": { role: "j3", title: "Juri 3" }
+      };
+
+      var BASE_CLASSES = ["1A&24", "1B&2B", "1C&2C", "1D&2F", "1E&2E", "2D", "3A&4A", "3B&4B", "3C&4C", "3D&4D", "3E&4E", "5A&6A", "5B&6B", "5C&6C", "5D&6D", "5E&6E"];
+
+      var KEY_DATA = "penataan_190_gas_data_v5";
+      var KEY_AUTH = "penataan_190_gas_auth_v5";
+      var KEY_GAS = "penataan_190_gas_url_v5";
+
+      var mem = {};
+      function getStore(st, k) {
+        try {
+          if (st && typeof st.getItem === "function") {
+            var v = st.getItem(k);
+            if (v !== null && v !== undefined) return v;
+          }
+        } catch (e) {}
+        return mem[k] || "";
+      }
+      function setStore(st, k, v) {
+        mem[k] = String(v);
+        try {
+          if (st && typeof st.setItem === "function") st.setItem(k, String(v));
+        } catch (e) {}
+      }
+      function delStore(st, k) {
+        delete mem[k];
+        try {
+          if (st && typeof st.removeItem === "function") st.removeItem(k);
+        } catch (e) {}
+      }
+
+      function blankRow() {
+        return { a1: "", a2: "", a3: "", a4: "", note: "", ts: 0 };
+      }
+
+      function normalizeData(raw) {
+        if (!raw || typeof raw !== "object") raw = {};
+        if (!Array.isArray(raw.classes) || raw.classes.length !== 16) raw.classes = BASE_CLASSES.slice();
+        if (typeof raw.locked !== "boolean") raw.locked = false;
+        ["j1", "j2", "j3"].forEach(function(jk) {
+          if (!raw[jk] || typeof raw[jk] !== "object") raw[jk] = {};
+          for (var i = 0; i < 16; i++) {
+            var r = raw[jk][i];
+            if (!r || typeof r !== "object") {
+              raw[jk][i] = blankRow();
+            } else {
+              raw[jk][i] = {
+                a1: r.a1 !== undefined ? r.a1 : "",
+                a2: r.a2 !== undefined ? r.a2 : "",
+                a3: r.a3 !== undefined ? r.a3 : "",
+                a4: r.a4 !== undefined ? r.a4 : "",
+                note: r.note !== undefined ? r.note : "",
+                ts: Number(r.ts || 0)
+              };
+            }
+          }
+        });
+        return raw;
+      }
+
+      var sessionUser = null;
+      var appData = normalizeData({});
+      var syncTimers = {};
+      var pollTimer = null;
+      var activeEditing = false;
+      var editingTimer = null;
+      var bcChannel = null;
+
+      function readLocalData() {
+        try {
+          var s = getStore(window.localStorage, KEY_DATA);
+          appData = s ? normalizeData(JSON.parse(s)) : normalizeData({});
+        } catch (e) {
+          appData = normalizeData({});
+        }
+      }
+
+      function writeLocalData(broadcast) {
+        setStore(window.localStorage, KEY_DATA, JSON.stringify(appData));
+        if (broadcast !== false && bcChannel) {
+          try { bcChannel.postMessage({ type: "state_updated", state: appData }); } catch (e) {}
+        }
+      }
+
+      function mergeIncomingState(incoming) {
+        incoming = normalizeData(incoming);
+        var changed = false;
+        if (JSON.stringify(appData.classes) !== JSON.stringify(incoming.classes)) {
+          appData.classes = incoming.classes.slice();
+          changed = true;
+        }
+        if (appData.locked !== incoming.locked) {
+          appData.locked = incoming.locked;
+          changed = true;
+        }
+        ["j1", "j2", "j3"].forEach(function(jk) {
+          if (syncTimers[jk]) return;
+          for (var i = 0; i < 16; i++) {
+            var incRow = incoming[jk][i];
+            var curRow = appData[jk][i];
+            var incTs = Number(incRow.ts || 0);
+            var curTs = Number(curRow.ts || 0);
+            if (incTs >= curTs) {
+              if (
+                String(incRow.a1) !== String(curRow.a1) ||
+                String(incRow.a2) !== String(curRow.a2) ||
+                String(incRow.a3) !== String(curRow.a3) ||
+                String(incRow.a4) !== String(curRow.a4) ||
+                String(incRow.note) !== String(curRow.note)
+              ) {
+                appData[jk][i] = {
+                  a1: incRow.a1, a2: incRow.a2, a3: incRow.a3, a4: incRow.a4,
+                  note: incRow.note, ts: incTs
+                };
+                changed = true;
+              } else {
+                appData[jk][i].ts = Math.max(curTs, incTs);
+              }
+            }
+          }
+        });
+        if (changed) {
+          writeLocalData(false);
+          if (sessionUser) syncInputsAndLabels();
+        }
+        return changed;
+      }
+
+      try {
+        if (typeof BroadcastChannel !== "undefined") {
+          bcChannel = new BroadcastChannel("penataan_190_gas_channel_v5");
+          bcChannel.onmessage = function(ev) {
+            if (ev && ev.data && ev.data.type === "state_updated" && ev.data.state) {
+              mergeIncomingState(ev.data.state);
+            }
+          };
+        }
+      } catch (e) {}
+
+      window.addEventListener("storage", function(ev) {
+        if (ev && ev.key === KEY_DATA && ev.newValue) {
+          try { mergeIncomingState(JSON.parse(ev.newValue)); } catch (e) {}
+        }
+      });
+
+      function resolveGasUrl() {
+        var h = window.location.hash || "";
+        if (h.indexOf("#gas=") === 0) {
+          try {
+            var u = decodeURIComponent(h.slice(5)).trim();
+            if (u.indexOf("http") === 0) {
+              setStore(window.localStorage, KEY_GAS, u);
+              return u;
+            }
+          } catch (e) {}
+        }
+        var saved = getStore(window.localStorage, KEY_GAS) || "";
+        return saved || PRESET_GAS_URL;
+      }
+
+      function setSyncBadge(msg, mode) {
+        var lbl = document.getElementById("sync-label");
+        var dot = document.getElementById("sync-indicator");
+        if (lbl) lbl.textContent = msg;
+        if (dot) {
+          dot.className = "w-2 h-2 rounded-full " + (
+            mode === "warn" ? "bg-amber-400" :
+            mode === "busy" ? "bg-sky-400" :
+            "bg-emerald-400"
+          );
+        }
+      }
+
+      function updateGasStatusUI() {
+        var u = resolveGasUrl();
+        var inp = document.getElementById("input-gas-url");
+        if (inp && u && !inp.value) inp.value = u;
+        var noGasBanner = document.getElementById("banner-no-gas");
+        var mGas = document.getElementById("metric-gas");
+        if (u) {
+          if (noGasBanner) noGasBanner.classList.add("hidden");
+          if (mGas) mGas.textContent = "Terkirim Otomatis";
+          setSyncBadge("Sheets Terhubung", "ok");
+        } else {
+          if (noGasBanner) noGasBanner.classList.remove("hidden");
+          if (mGas) mGas.textContent = "Lokal (Atur URL)";
+          setSyncBadge("Belum Pasang URL GAS", "warn");
+        }
+      }
+
+      function postToGas(body, onSuccessMsg) {
+        var url = resolveGasUrl();
+        if (!url) {
+          setSyncBadge("Tersimpan Lokal", "warn");
+          return;
+        }
+        setSyncBadge("Mengirim ke Admin...", "busy");
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(body)
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+          if (res && res.ok && res.state) {
+            mergeIncomingState(res.state);
+            setSyncBadge("Terkirim ke Admin", "ok");
+            if (onSuccessMsg) notify(onSuccessMsg);
+          } else {
+            setSyncBadge("Cek Web App GAS", "warn");
+          }
+        })
+        .catch(function() {
+          setSyncBadge("Antre / Cek Koneksi", "warn");
+        });
+      }
+
+      function fetchRemoteNow(showMsg) {
+        if (activeEditing && !showMsg) return;
+        readLocalData();
+        if (sessionUser) syncInputsAndLabels();
+        var url = resolveGasUrl();
+        if (!url) {
+          if (showMsg) notify("ℹ️ Pasang Web App URL Google Apps Script agar nilai terkirim otomatis ke Admin.");
+          return;
+        }
+        setSyncBadge("Menyinkronkan...", "busy");
+        var sep = url.indexOf("?") === -1 ? "?" : "&";
+        fetch(url + sep + "action=get&t=" + Date.now())
+          .then(function(r) { return r.json(); })
+          .then(function(res) {
+            if (res && res.ok && res.state) {
+              mergeIncomingState(res.state);
+              setSyncBadge("Sheets Terhubung", "ok");
+              if (showMsg) notify("✅ Data terbaru tersinkron dengan Admin & Google Sheets.");
+            }
+          })
+          .catch(function() {
+            setSyncBadge("Mode Lokal Aktif", "warn");
+            if (showMsg) notify("⚠️ Gagal memuat dari Google Sheets, menampilkan data lokal.");
+          });
+      }
+
+      function queueJudgeSync(jk) {
+        writeLocalData(true);
+        clearTimeout(syncTimers[jk]);
+        syncTimers[jk] = setTimeout(function() {
+          delete syncTimers[jk];
+          postToGas({ action: "save_judge", judge: jk, rows: appData[jk] });
+        }, 350);
+      }
+
+      function handleLoginTrigger(ev) {
+        if (ev && typeof ev.preventDefault === "function") ev.preventDefault();
+        var inp = document.getElementById("input-token");
+        var alertEl = document.getElementById("login-alert");
+        var raw = inp ? String(inp.value || "").trim().toUpperCase() : "";
+
+        if (!raw) {
+          if (alertEl) {
+            alertEl.textContent = "⚠️ Silakan masukkan token akses terlebih dahulu.";
+            alertEl.classList.remove("hidden");
+          }
+          if (inp) inp.focus();
+          return false;
+        }
+
+        if (!ACCESS_TOKENS[raw]) {
+          if (alertEl) {
+            alertEl.textContent = "⚠️ Token '" + raw + "' tidak dikenali. Gunakan token yang terdaftar.";
+            alertEl.classList.remove("hidden");
+          }
+          return false;
+        }
+
+        if (alertEl) alertEl.classList.add("hidden");
+        return activateSession(raw);
+      }
+
+      function activateSession(code) {
+        var found = ACCESS_TOKENS[code];
+        if (!found) return false;
+
+        readLocalData();
+        sessionUser = { code: code, role: found.role, title: found.title };
+        setStore(window.sessionStorage, KEY_AUTH, code);
+
+        var vLogin = document.getElementById("view-login");
+        var vMain = document.getElementById("view-main");
+        if (vLogin) vLogin.style.display = "none";
+        if (vMain) vMain.style.display = "block";
+
+        var badge = document.getElementById("badge-role");
+        if (badge) badge.textContent = sessionUser.title;
+
+        var adminPanel = document.getElementById("section-admin-panel");
+        var summarySec = document.getElementById("section-summary-admin");
+        var rankingSec = document.getElementById("section-ranking-admin");
+        var headingTbl = document.getElementById("heading-table");
+        if (sessionUser.role === "admin") {
+          if (adminPanel) adminPanel.classList.remove("hidden");
+          if (summarySec) summarySec.classList.remove("hidden");
+          if (rankingSec) rankingSec.classList.remove("hidden");
+          if (headingTbl) headingTbl.textContent = "Lembar Penilaian & Rekapitulasi 16 Kelas (Semua Juri)";
+        } else {
+          if (adminPanel) adminPanel.classList.add("hidden");
+          if (summarySec) summarySec.classList.add("hidden");
+          if (rankingSec) rankingSec.classList.add("hidden");
+          if (headingTbl) headingTbl.textContent = "Lembar Penilaian Penataan Kelas — " + sessionUser.title + " (Hanya Nilai Anda)";
+        }
+
+        updateGasStatusUI();
+        buildTable();
+        fetchRemoteNow(false);
+
+        if (pollTimer) clearInterval(pollTimer);
+        pollTimer = setInterval(function() { fetchRemoteNow(false); }, 3500);
+        return true;
+      }
+
+      function logoutSession() {
+        writeLocalData(true);
+        if (sessionUser) {
+          if (sessionUser.role === "admin") {
+            postToGas({ action: "merge_state", state: appData });
+          } else {
+            postToGas({ action: "save_judge", judge: sessionUser.role, rows: appData[sessionUser.role] });
+          }
+        }
+        delStore(window.sessionStorage, KEY_AUTH);
+        sessionUser = null;
+        if (pollTimer) clearInterval(pollTimer);
+
+        var inp = document.getElementById("input-token");
+        if (inp) {
+          inp.value = "";
+          inp.type = "password";
+        }
+        var eyeBtn = document.getElementById("btn-toggle-token");
+        if (eyeBtn) eyeBtn.textContent = "Lihat";
+
+        var vMain = document.getElementById("view-main");
+        var vLogin = document.getElementById("view-login");
+        if (vMain) vMain.style.display = "none";
+        if (vLogin) vLogin.style.display = "flex";
+      }
+
+      function calcJudgeTotal(r) {
+        if (!r) return 0;
+        var n1 = parseFloat(r.a1), n2 = parseFloat(r.a2), n3 = parseFloat(r.a3), n4 = parseFloat(r.a4);
+        if (isNaN(n1) && isNaN(n2) && isNaN(n3) && isNaN(n4)) return 0;
+        var a1 = isNaN(n1) ? 0 : n1;
+        var a2 = isNaN(n2) ? 0 : n2;
+        var a3 = isNaN(n3) ? 0 : n3;
+        var a4 = isNaN(n4) ? 0 : n4;
+        return ((((a1 * 0.30) + (a2 * 0.30) + (a3 * 0.20) + (a4 * 0.20)) / 4) * 100);
+      }
+
+      function hasScore(r) {
+        return r && (String(r.a1 || "") !== "" || String(r.a2 || "") !== "" || String(r.a3 || "") !== "" || String(r.a4 || "") !== "");
+      }
+
+      function calcFinal(idx) {
+        return (calcJudgeTotal(appData.j1[idx]) + calcJudgeTotal(appData.j2[idx]) + calcJudgeTotal(appData.j3[idx])) / 3;
+      }
+
+      function adminJudgeCols(jk, idx, badgeCls) {
+        return (
+          '<td class="py-2 px-0.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + jk + '" data-i="' + idx + '" data-f="a1" class="cell-inp w-11 text-center py-1 px-0.5 rounded border border-slate-200 focus:border-teal-500 font-semibold text-xs outline-none" /></td>' +
+          '<td class="py-2 px-0.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + jk + '" data-i="' + idx + '" data-f="a2" class="cell-inp w-11 text-center py-1 px-0.5 rounded border border-slate-200 focus:border-teal-500 font-semibold text-xs outline-none" /></td>' +
+          '<td class="py-2 px-0.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + jk + '" data-i="' + idx + '" data-f="a3" class="cell-inp w-11 text-center py-1 px-0.5 rounded border border-slate-200 focus:border-cyan-500 font-semibold text-xs outline-none" /></td>' +
+          '<td class="py-2 px-0.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + jk + '" data-i="' + idx + '" data-f="a4" class="cell-inp w-11 text-center py-1 px-0.5 rounded border border-slate-200 focus:border-indigo-500 font-semibold text-xs outline-none" /></td>' +
+          '<td class="py-2 px-1.5 text-center font-bold text-xs ' + badgeCls + ' border-r border-slate-100"><span id="val-jtotal-' + jk + '-' + idx + '">0.00</span></td>'
+        );
+      }
+
+      function buildTable() {
+        var thead = document.getElementById("tbl-head");
+        var tbody = document.getElementById("tbl-body");
+        if (!thead || !tbody || !sessionUser) return;
+        var isAdmin = sessionUser.role === "admin";
+        var role = sessionUser.role;
+
+        if (isAdmin) {
+          thead.innerHTML =
+            '<tr>' +
+              '<th rowspan="2" class="py-3 px-2.5 text-center border-r border-slate-700 w-11">No.</th>' +
+              '<th rowspan="2" class="py-3 px-3 border-r border-slate-700 min-w-[95px]">Kelas</th>' +
+              '<th colspan="5" class="py-2 px-2 text-center bg-teal-900 border-r border-slate-700">Juri 1</th>' +
+              '<th colspan="5" class="py-2 px-2 text-center bg-cyan-900 border-r border-slate-700">Juri 2</th>' +
+              '<th colspan="5" class="py-2 px-2 text-center bg-indigo-900 border-r border-slate-700">Juri 3</th>' +
+              '<th rowspan="2" class="py-3 px-3 text-center bg-purple-950 border-r border-slate-700 w-24">Nilai Akhir</th>' +
+              '<th rowspan="2" class="py-3 px-3 min-w-[210px]">Catatan Juri</th>' +
+            '</tr>' +
+            '<tr class="text-[10px] bg-slate-800">' +
+              '<th class="py-1.5 px-1 text-center">Letak<br><span class="text-teal-300">30%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Adm<br><span class="text-teal-300">30%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Udara<br><span class="text-teal-300">20%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Estetika<br><span class="text-teal-300">20%</span></th>' +
+              '<th class="py-1.5 px-1.5 text-center bg-teal-950 border-r border-slate-700">Total</th>' +
+              '<th class="py-1.5 px-1 text-center">Letak<br><span class="text-cyan-300">30%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Adm<br><span class="text-cyan-300">30%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Udara<br><span class="text-cyan-300">20%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Estetika<br><span class="text-cyan-300">20%</span></th>' +
+              '<th class="py-1.5 px-1.5 text-center bg-cyan-950 border-r border-slate-700">Total</th>' +
+              '<th class="py-1.5 px-1 text-center">Letak<br><span class="text-indigo-300">30%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Adm<br><span class="text-indigo-300">30%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Udara<br><span class="text-indigo-300">20%</span></th>' +
+              '<th class="py-1.5 px-1 text-center">Estetika<br><span class="text-indigo-300">20%</span></th>' +
+              '<th class="py-1.5 px-1.5 text-center bg-indigo-950 border-r border-slate-700">Total</th>' +
+            '</tr>';
+
+          var html = "";
+          for (var i = 0; i < 16; i++) {
+            html +=
+              '<tr class="hover:bg-teal-50/40">' +
+                '<td class="py-2.5 px-2.5 text-center font-bold text-slate-500 border-r border-slate-100">' + (i + 1) + '</td>' +
+                '<td id="lbl-cls-' + i + '" class="py-2.5 px-3 font-extrabold text-slate-900 border-r border-slate-100 whitespace-nowrap">' + esc(appData.classes[i]) + '</td>' +
+                adminJudgeCols("j1", i, "bg-teal-50 text-teal-900") +
+                adminJudgeCols("j2", i, "bg-cyan-50 text-cyan-900") +
+                adminJudgeCols("j3", i, "bg-indigo-50 text-indigo-900") +
+                '<td class="py-2.5 px-3 text-center font-extrabold text-base text-purple-800 bg-purple-50/60 border-r border-slate-100"><span id="val-final-' + i + '">0.00</span></td>' +
+                '<td class="py-2 px-3 space-y-1">' +
+                  '<input type="text" data-j="j1" data-i="' + i + '" data-f="note" placeholder="Catatan Juri 1..." class="cell-inp w-full px-2 py-1 text-xs rounded border border-slate-200 focus:border-teal-500 outline-none" />' +
+                  '<input type="text" data-j="j2" data-i="' + i + '" data-f="note" placeholder="Catatan Juri 2..." class="cell-inp w-full px-2 py-1 text-xs rounded border border-slate-200 focus:border-cyan-500 outline-none" />' +
+                  '<input type="text" data-j="j3" data-i="' + i + '" data-f="note" placeholder="Catatan Juri 3..." class="cell-inp w-full px-2 py-1 text-xs rounded border border-slate-200 focus:border-indigo-500 outline-none" />' +
+                '</td>' +
+              '</tr>';
+          }
+          tbody.innerHTML = html;
+        } else {
+          thead.innerHTML =
+            '<tr>' +
+              '<th class="py-3.5 px-3 text-center w-14">No.</th>' +
+              '<th class="py-3.5 px-4 min-w-[130px]">Kelas</th>' +
+              '<th class="py-3.5 px-2.5 text-center min-w-[125px]">Tata Letak Perabotan<br><span class="text-teal-300 text-[11px]">Bobot 30% (1-4)</span></th>' +
+              '<th class="py-3.5 px-2.5 text-center min-w-[135px]">Kelengkapan Administrasi<br><span class="text-teal-300 text-[11px]">Bobot 30% (1-4)</span></th>' +
+              '<th class="py-3.5 px-2.5 text-center min-w-[140px]">Pencahayaan &amp; Sirkulasi Udara<br><span class="text-cyan-300 text-[11px]">Bobot 20% (1-4)</span></th>' +
+              '<th class="py-3.5 px-2.5 text-center min-w-[130px]">Estetika &amp; Kreativitas<br><span class="text-indigo-300 text-[11px]">Bobot 20% (1-4)</span></th>' +
+              '<th class="py-3.5 px-3 text-center bg-teal-900 min-w-[115px]">Nilai Total<br><span class="text-teal-200 text-[11px]">' + esc(sessionUser.title) + '</span></th>' +
+              '<th class="py-3.5 px-4 min-w-[220px]">Catatan Juri (' + esc(sessionUser.title) + ')</th>' +
+            '</tr>';
+
+          var jHtml = "";
+          for (var k = 0; k < 16; k++) {
+            jHtml +=
+              '<tr class="hover:bg-teal-50/40">' +
+                '<td class="py-3 px-3 text-center font-bold text-slate-500">' + (k + 1) + '</td>' +
+                '<td id="lbl-cls-' + k + '" class="py-3 px-4 font-extrabold text-slate-900 whitespace-nowrap">' + esc(appData.classes[k]) + '</td>' +
+                '<td class="py-2.5 px-2.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + role + '" data-i="' + k + '" data-f="a1" placeholder="1-4" class="cell-inp w-20 text-center py-2 px-2 rounded-xl border-2 border-slate-200 focus:border-teal-500 font-bold text-slate-900 outline-none" /></td>' +
+                '<td class="py-2.5 px-2.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + role + '" data-i="' + k + '" data-f="a2" placeholder="1-4" class="cell-inp w-20 text-center py-2 px-2 rounded-xl border-2 border-slate-200 focus:border-teal-500 font-bold text-slate-900 outline-none" /></td>' +
+                '<td class="py-2.5 px-2.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + role + '" data-i="' + k + '" data-f="a3" placeholder="1-4" class="cell-inp w-20 text-center py-2 px-2 rounded-xl border-2 border-cyan-200 focus:border-cyan-500 font-bold text-slate-900 outline-none" /></td>' +
+                '<td class="py-2.5 px-2.5 text-center"><input type="number" min="1" max="4" step="0.1" data-j="' + role + '" data-i="' + k + '" data-f="a4" placeholder="1-4" class="cell-inp w-20 text-center py-2 px-2 rounded-xl border-2 border-indigo-200 focus:border-indigo-500 font-bold text-slate-900 outline-none" /></td>' +
+                '<td class="py-3 px-3 text-center bg-teal-50/70"><span id="val-jtotal-' + role + '-' + k + '" class="inline-block px-2.5 py-1 rounded-xl bg-teal-100 text-teal-900 font-extrabold text-sm">0.00</span></td>' +
+                '<td class="py-2.5 px-4"><input type="text" data-j="' + role + '" data-i="' + k + '" data-f="note" placeholder="Catatan ' + esc(sessionUser.title) + '..." class="cell-inp w-full py-2 px-3 rounded-xl border border-slate-200 focus:border-teal-500 outline-none text-xs sm:text-sm" /></td>' +
+              '</tr>';
+          }
+          tbody.innerHTML = jHtml;
+        }
+
+        bindCellInputs();
+        syncInputsAndLabels();
+      }
+
+      function bindCellInputs() {
+        document.querySelectorAll(".cell-inp").forEach(function(el) {
+          el.addEventListener("focus", function() {
+            activeEditing = true;
+            clearTimeout(editingTimer);
+          });
+          el.addEventListener("blur", function() {
+            editingTimer = setTimeout(function() { activeEditing = false; }, 600);
+          });
+          el.addEventListener("input", function(ev) {
+            activeEditing = true;
+            clearTimeout(editingTimer);
+            editingTimer = setTimeout(function() { activeEditing = false; }, 1200);
+
+            var jk = ev.target.dataset.j;
+            var idx = parseInt(ev.target.dataset.i, 10);
+            var f = ev.target.dataset.f;
+            var val = ev.target.value;
+
+            if (f !== "note" && val !== "") {
+              var num = parseFloat(val);
+              if (num > 4) { ev.target.value = "4"; val = "4"; }
+              else if (num < 1 && val.length >= 1 && num !== 0) { ev.target.value = "1"; val = "1"; }
+            }
+
+            appData[jk][idx][f] = val;
+            appData[jk][idx].ts = Date.now();
+            updateTotalsAndSummary();
+            queueJudgeSync(jk);
+          });
+        });
+      }
+
+      function syncInputsAndLabels() {
+        if (!sessionUser) return;
+        var lockedForUser = appData.locked && sessionUser.role !== "admin";
+        var lockBanner = document.getElementById("banner-locked");
+        if (lockBanner) {
+          if (lockedForUser) lockBanner.classList.remove("hidden");
+          else lockBanner.classList.add("hidden");
+        }
+
+        for (var i = 0; i < 16; i++) {
+          var lbl = document.getElementById("lbl-cls-" + i);
+          if (lbl) lbl.textContent = appData.classes[i];
+        }
+
+        document.querySelectorAll(".cell-inp").forEach(function(el) {
+          var jk = el.dataset.j;
+          var canEdit = (sessionUser.role === "admin" || sessionUser.role === jk) && !lockedForUser;
+          el.disabled = !canEdit;
+          if (!canEdit) el.classList.add("bg-slate-100", "text-slate-500", "cursor-not-allowed");
+          else el.classList.remove("bg-slate-100", "text-slate-500", "cursor-not-allowed");
+
+          if (document.activeElement === el) return;
+          var idx = parseInt(el.dataset.i, 10);
+          var f = el.dataset.f;
+          var v = (appData[jk] && appData[jk][idx] && appData[jk][idx][f] !== undefined) ? appData[jk][idx][f] : "";
+          if (el.value !== String(v)) el.value = v;
+        });
+
+        updateTotalsAndSummary();
+      }
+
+      function updateTotalsAndSummary() {
+        var done1 = 0, done2 = 0, done3 = 0, sumAll = 0;
+        var list = [];
+
+        for (var i = 0; i < 16; i++) {
+          ["j1", "j2", "j3"].forEach(function(jk) {
+            var el = document.getElementById("val-jtotal-" + jk + "-" + i);
+            if (el) el.textContent = calcJudgeTotal(appData[jk][i]).toFixed(2);
+          });
+          var t1 = calcJudgeTotal(appData.j1[i]);
+          var t2 = calcJudgeTotal(appData.j2[i]);
+          var t3 = calcJudgeTotal(appData.j3[i]);
+          var fin = (t1 + t2 + t3) / 3;
+          var finEl = document.getElementById("val-final-" + i);
+          if (finEl) finEl.textContent = fin.toFixed(2);
+
+          if (hasScore(appData.j1[i])) done1++;
+          if (hasScore(appData.j2[i])) done2++;
+          if (hasScore(appData.j3[i])) done3++;
+          sumAll += fin;
+          list.push({ idx: i, cls: appData.classes[i], t1: t1, t2: t2, t3: t3, fin: fin });
+        }
+
+        var progEl = document.getElementById("metric-progress");
+        if (progEl) progEl.textContent = done1 + " / " + done2 + " / " + done3;
+        var avgEl = document.getElementById("metric-avg");
+        if (avgEl) avgEl.textContent = (sumAll / 16).toFixed(2);
+
+        var mLock = document.getElementById("metric-lock");
+        var bLock = document.getElementById("btn-toggle-lock");
+        if (appData.locked) {
+          if (mLock) { mLock.textContent = "Penilaian Terkunci"; mLock.className = "text-xs font-semibold text-amber-600 mt-1"; }
+          if (bLock) bLock.textContent = "🔓 Buka Penilaian";
+        } else {
+          if (mLock) { mLock.textContent = "Penilaian Terbuka"; mLock.className = "text-xs font-semibold text-emerald-600 mt-1"; }
+          if (bLock) bLock.textContent = "🔒 Kunci Penilaian";
+        }
+
+        var desc = list.slice().sort(function(a, b) { return b.fin - a.fin || a.idx - b.idx; });
+        var podiumCards = [
+          { tag: "Juara 1", ico: "🥇", box: "bg-amber-50 border-amber-300", pill: "bg-amber-500 text-white" },
+          { tag: "Juara 2", ico: "🥈", box: "bg-slate-50 border-slate-300", pill: "bg-slate-600 text-white" },
+          { tag: "Juara 3", ico: "🥉", box: "bg-orange-50 border-orange-300", pill: "bg-orange-600 text-white" }
+        ];
+        var podBox = document.getElementById("box-podium");
+        if (podBox) {
+          podBox.innerHTML = desc.slice(0, 3).map(function(item, i) {
+            return (
+              '<div class="p-3.5 rounded-2xl border-2 ' + podiumCards[i].box + ' flex flex-col justify-between">' +
+                '<div class="flex items-center justify-between"><span class="px-2 py-0.5 rounded-md text-[10px] font-bold ' + podiumCards[i].pill + '">' + podiumCards[i].tag + '</span><span class="text-xl">' + podiumCards[i].ico + '</span></div>' +
+                '<div class="mt-3"><p class="text-lg font-extrabold text-slate-900">' + esc(item.cls) + '</p><p class="text-xs font-bold text-indigo-700">Nilai Akhir: ' + item.fin.toFixed(2) + '</p></div>' +
+              '</div>'
+            );
+          }).join("");
+        }
+
+        var rankBody = document.getElementById("ranking-body");
+        if (rankBody) {
+          rankBody.innerHTML = desc.map(function(item, idx) {
+            var pred = "Cukup Tertata", cls = "bg-slate-100 text-slate-700";
+            if (item.fin >= 90) { pred = "Sangat Tertata"; cls = "bg-emerald-100 text-emerald-800"; }
+            else if (item.fin >= 80) { pred = "Tertata & Rapi"; cls = "bg-teal-100 text-teal-800"; }
+            else if (item.fin >= 70) { pred = "Cukup Tertata"; cls = "bg-sky-100 text-sky-800"; }
+            else if (item.fin > 0) { pred = "Perlu Penataan"; cls = "bg-rose-100 text-rose-800"; }
+            else { pred = "Belum Dinilai"; }
+            var rk = idx === 0 ? "🥇 1" : idx === 1 ? "🥈 2" : idx === 2 ? "🥉 3" : ("#" + (idx + 1));
+            return (
+              '<tr class="hover:bg-slate-50">' +
+                '<td class="py-3 px-4 text-center font-extrabold text-slate-800">' + rk + '</td>' +
+                '<td class="py-3 px-4 font-extrabold text-slate-900">' + esc(item.cls) + '</td>' +
+                '<td class="py-3 px-4 text-center font-semibold text-slate-600">' + item.t1.toFixed(2) + '</td>' +
+                '<td class="py-3 px-4 text-center font-semibold text-slate-600">' + item.t2.toFixed(2) + '</td>' +
+                '<td class="py-3 px-4 text-center font-semibold text-slate-600">' + item.t3.toFixed(2) + '</td>' +
+                '<td class="py-3 px-4 text-center font-extrabold text-indigo-700 bg-indigo-50/50">' + item.fin.toFixed(2) + '</td>' +
+                '<td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-bold ' + cls + '">' + pred + '</span></td>' +
+              '</tr>'
+            );
+          }).join("");
+        }
+      }
+
+      function saveGasEndpoint(copyLinkToo) {
+        var inp = document.getElementById("input-gas-url");
+        var u = inp ? inp.value.trim() : "";
+        setStore(window.localStorage, KEY_GAS, u);
+        updateGasStatusUI();
+        if (u) postToGas({ action: "merge_state", state: appData }, "✅ URL Google Apps Script disimpan & tersinkron ke Admin.");
+        else notify("ℹ️ URL Google Apps Script dikosongkan.");
+        if (copyLinkToo) copyShareLink();
+      }
+
+      function toggleClassEditor() {
+        var p = document.getElementById("panel-class-editor");
+        if (!p) return;
+        p.classList.toggle("hidden");
+        if (!p.classList.contains("hidden")) {
+          var grid = document.getElementById("grid-class-editor");
+          if (grid) {
+            grid.innerHTML = appData.classes.map(function(c, i) {
+              return '<div><label class="block text-[10px] font-bold text-slate-400 mb-0.5">Kelas #' + (i + 1) + '</label><input type="text" data-cidx="' + i + '" value="' + esc(c) + '" class="cls-edit w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold" /></div>';
+            }).join("");
+          }
+        }
+      }
+
+      function saveClassEdits() {
+        document.querySelectorAll(".cls-edit").forEach(function(inp) {
+          var i = parseInt(inp.dataset.cidx, 10);
+          var v = inp.value.trim();
+          if (v) appData.classes[i] = v;
+        });
+        writeLocalData(true);
+        syncInputsAndLabels();
+        postToGas({ action: "update_settings", classes: appData.classes, locked: appData.locked }, "✅ Nama 16 kelas tersimpan & terkirim ke server.");
+        var p = document.getElementById("panel-class-editor");
+        if (p) p.classList.add("hidden");
+      }
+
+      function toggleLock() {
+        appData.locked = !appData.locked;
+        writeLocalData(true);
+        syncInputsAndLabels();
+        postToGas({ action: "update_settings", classes: appData.classes, locked: appData.locked }, appData.locked ? "🔒 Penilaian dikunci." : "🔓 Penilaian dibuka.");
+      }
+
+      function resetScores() {
+        if (!confirm("Reset semua nilai & catatan Juri 1, Juri 2, dan Juri 3 menjadi kosong?")) return;
+        ["j1", "j2", "j3"].forEach(function(jk) {
+          for (var i = 0; i < 16; i++) appData[jk][i] = blankRow();
+        });
+        writeLocalData(true);
+        syncInputsAndLabels();
+        postToGas({ action: "reset_all" }, "🗑️ Semua nilai berhasil direset.");
+      }
+
+      function downloadCSV() {
+        var lines = ["No,Kelas,J1_Letak,J1_Adm,J1_Udara,J1_Estetika,J1_Total,J2_Letak,J2_Adm,J2_Udara,J2_Estetika,J2_Total,J3_Letak,J3_Adm,J3_Udara,J3_Estetika,J3_Total,Nilai_Akhir,Catatan"];
+        for (var i = 0; i < 16; i++) {
+          var j1 = appData.j1[i], j2 = appData.j2[i], j3 = appData.j3[i];
+          var t1 = calcJudgeTotal(j1).toFixed(2), t2 = calcJudgeTotal(j2).toFixed(2), t3 = calcJudgeTotal(j3).toFixed(2);
+          var fin = calcFinal(i).toFixed(2);
+          var notes = [j1.note ? "J1: " + j1.note : "", j2.note ? "J2: " + j2.note : "", j3.note ? "J3: " + j3.note : ""].filter(Boolean).join(" | ").replace(/"/g, '""');
+          lines.push((i + 1) + ',"' + appData.classes[i] + '",' +
+            (j1.a1 || 0) + ',' + (j1.a2 || 0) + ',' + (j1.a3 || 0) + ',' + (j1.a4 || 0) + ',' + t1 + ',' +
+            (j2.a1 || 0) + ',' + (j2.a2 || 0) + ',' + (j2.a3 || 0) + ',' + (j2.a4 || 0) + ',' + t2 + ',' +
+            (j3.a1 || 0) + ',' + (j3.a2 || 0) + ',' + (j3.a3 || 0) + ',' + (j3.a4 || 0) + ',' + t3 + ',' +
+            fin + ',"' + notes + '"');
+        }
+        var blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "Rekap_Penataan_Kelas_SDN190.csv";
+        a.click();
+      }
+
+      function downloadJSON() {
+        var blob = new Blob([JSON.stringify(appData, null, 2)], { type: "application/json" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "Backup_Penataan_Kelas_SDN190.json";
+        a.click();
+      }
+
+      function uploadJSON(e) {
+        var f = e.target.files[0];
+        if (!f) return;
+        var r = new FileReader();
+        r.onload = function(ev) {
+          try {
+            appData = normalizeData(JSON.parse(ev.target.result));
+            writeLocalData(true);
+            syncInputsAndLabels();
+            postToGas({ action: "import_state", state: appData }, "📂 Data JSON berhasil dimuat & dikirim ke server.");
+          } catch (err) {
+            notify("❌ File JSON tidak valid.");
+          }
+        };
+        r.readAsText(f);
+      }
+
+      function esc(s) {
+        return String(s === undefined || s === null ? "" : s)
+          .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      function notify(msg) {
+        var box = document.getElementById("toast-box");
+        var txt = document.getElementById("toast-text");
+        if (!box || !txt) return;
+        txt.textContent = msg;
+        box.classList.remove("hidden");
+        clearTimeout(window._nTimer);
+        window._nTimer = setTimeout(function() { box.classList.add("hidden"); }, 3000);
+      }
+
+      function copyText(txt, okMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(function() { notify(okMsg); }).catch(function() { fallbackCopy(txt, okMsg); });
+        } else {
+          fallbackCopy(txt, okMsg);
+        }
+      }
+
+      function fallbackCopy(txt, okMsg) {
+        var ta = document.createElement("textarea");
+        ta.value = txt;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); notify(okMsg); } catch (e) { notify("⚠️ Salin secara manual."); }
+        document.body.removeChild(ta);
+      }
+
+      function copyShareLink() {
+        var base = window.location.href.split("#")[0];
+        var u = resolveGasUrl();
+        var full = u ? (base + "#gas=" + encodeURIComponent(u)) : base;
+        copyText(full, u ? "🔗 Link Aplikasi + Google Apps Script disalin!" : "🔗 Link aplikasi disalin!");
+      }
+
+      function initApp() {
+        var formLogin = document.getElementById("form-login");
+        var btnSubmit = document.getElementById("btn-login-submit");
+        var btnEye = document.getElementById("btn-toggle-token");
+
+        if (formLogin) formLogin.addEventListener("submit", handleLoginTrigger);
+        if (btnSubmit) btnSubmit.addEventListener("click", handleLoginTrigger);
+        if (btnEye) {
+          btnEye.addEventListener("click", function() {
+            var inp = document.getElementById("input-token");
+            if (!inp) return;
+            if (inp.type === "password") { inp.type = "text"; btnEye.textContent = "Sembunyikan"; }
+            else { inp.type = "password"; btnEye.textContent = "Lihat"; }
+          });
+        }
+
+        var onClickById = function(id, fn) {
+          var el = document.getElementById(id);
+          if (el) el.addEventListener("click", fn);
+        };
+        onClickById("btn-copy-login-link", copyShareLink);
+        onClickById("btn-copy-main-link", copyShareLink);
+        onClickById("btn-sync-now", function() { fetchRemoteNow(true); });
+        onClickById("btn-logout", logoutSession);
+        onClickById("btn-edit-classes", toggleClassEditor);
+        onClickById("btn-save-classes", saveClassEdits);
+        onClickById("btn-toggle-lock", toggleLock);
+        onClickById("btn-print", function() { window.print(); });
+        onClickById("btn-csv", downloadCSV);
+        onClickById("btn-json", downloadJSON);
+        onClickById("btn-reset", resetScores);
+        onClickById("btn-save-gas", function() { saveGasEndpoint(false); });
+        onClickById("btn-save-copy-gas", function() { saveGasEndpoint(true); });
+        onClickById("btn-toggle-script", function() {
+          var p = document.getElementById("panel-gas-script");
+          if (p) p.classList.toggle("hidden");
+        });
+        onClickById("btn-copy-gas-code", function() {
+          var pre = document.getElementById("pre-gas-script");
+          if (pre) copyText(pre.textContent, "📋 Kode Google Apps Script disalin!");
+        });
+
+        var inpJson = document.getElementById("input-import-json");
+        if (inpJson) inpJson.addEventListener("change", uploadJSON);
+
+        resolveGasUrl();
+        readLocalData();
+        var authCode = getStore(window.sessionStorage, KEY_AUTH) || "";
+        if (authCode && ACCESS_TOKENS[authCode]) {
+          activateSession(authCode);
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initApp);
+      } else {
+        initApp();
+      }
+    })();
+  </script>
+</body>
+</html>
